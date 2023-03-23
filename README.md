@@ -1,20 +1,28 @@
-# qa-test-answer
+# QA Automation Engineer Test Results
 
-QA Test Automation Engineer - Results
-Tools: Postman
-Editor: Sublime Text
+Here is all answer to the test tasks
 
-As a user, I want to be able to fetch a list of countries, so that I can display them in my own application.
+## As a user, I want to be able to fetch a list of countries, so that I can display them in my own application.
+
 Acceptance Criteria:
+```
 The endpoint should be publicly available
 The countries should be sorted by their population by default
+```
+Use the endpoint GET /countries.
 
-Test Results:
+```bash
 Set up the Authorization (Type: Basic Auth)
 Username: admin
 Password: p@55w07d
-Get a list of countries
-GET /countries (GET http://localhost:8080/countries)
+```
+
+## Get the list of countries
+
+```python
+GET http://localhost:8080/countries
+
+# returns list of countries
 [
    {
        "name": "AFGHANISTAN",
@@ -1047,55 +1055,72 @@ GET /countries (GET http://localhost:8080/countries)
        "population": 0
    }
 ]
+```
 
-
-As an admin, I want to be able to update a countries population, so that I can ensure the populations are accurate when new consensus data is made available.
+## As an admin, I want to be able to update a countries population, so that I can ensure the populations are accurate when new consensus data is made available.
 Acceptance Criteria:
+```
 The endpoint should be password protected using admin and p@55w07d
 Only the population should be updatable
-Test Results:
+```
+
+Use the endpoint PATCH /countries{code}.
+
+```bash
 Set up the Authorization (Type: Basic Auth)
 Username: admin
 Password: p@55w07d
+```
+
+## Patch the country's population
+```python
 PATCH http://localhost:8080/countries/afg
-On Body: 
-Write command in JSON type:
+
+#On Body: 
+#Write command in JSON type:
 {
 "name": "AFGANISTAN",
 "population": 100
 }
-Then Press Send button 
-Response: 202
-Now, the population of country AFGANISTAN is updated
+#Then Press Send button 
+#Response: 202
+#Now, the population of country AFGANISTAN is updated
 {
    "name": "AFGANISTAN",
    "code": "afg",
    "population": 100
 }
-
-As an admin, I want to be able to remove a country from the list, so that I can maintain only countries that make it on to my chart.
-
+```
+![Population is updated](update_population.png)
+## As an admin, I want to be able to remove a country from the list, so that I can maintain only countries that make it on to my chart.
 Acceptance Criteria:
 
+```
 The endpoint should be password protected using admin and p@55w07d
 Should completely remove the country from the internal list and subsequent calls to the fetch countries endpoint
+```
+## Delete/Remove Country from the countries list i.e. Afganistan
 
-Test Results:
+```bash
 Set up the Authorization (Type: Basic Auth)
 Username: admin
 Password: p@55w07d
+# endpoint delete
 DELETE http://localhost:8080/countries/afg
-When Running this will get a return response error of 500 
+# When Running this will get a return response error of 500 
 `Unknown error whilst deleting. Cannot DELETE FROM Countrie WHERE code = '${code}'`,
   HttpStatus.INTERNAL_SERVER_ERROR,
-So, to make sure the delete/remove a country from the list success. Need to command a couple of line codes in app.controller.ts file.
+# So, to make sure the delete/remove a country from the list success. Need to command a couple of line codes in app.controller.ts file.
+```
+![Command some line codes](2023-03-23_15-30-07.png)
 
-After editing the line codes, ensure to stop and delete the container qa-test also delete the images
-Try to run again the project directory by running the script docker-compose up
-Then run again the endpoint DELETE http://localhost:8080/countries/afg
-Response status = 204 No Content
-Check with GET http://localhost:8080/countries
-The country Afganistan is removed from the list
+```bash
+#After editing the line codes, ensure to stop and delete the container qa-test also delete the images
+#Try to run again the project directory by running the script docker-compose up
+#Then run again the endpoint DELETE http://localhost:8080/countries/afg
+#Response status = 204 No Content
+#Check with GET http://localhost:8080/countries
+#The country Afganistan is removed from the list
 [
    {
        "name": "ALBANIA",
@@ -2123,18 +2148,24 @@ The country Afganistan is removed from the list
        "population": 0
    }
 ]
+```
 
+## As an admin, I want to be able to reset the database back to it's original state, so that I can quickly recover from any problems that might be introduced when editing.
 
-As an admin, I want to be able to reset the database back to it's original state, so that I can quickly recover from any problems that might be introduced when editing.
 Acceptance Criteria:
 
 The endpoint should be password protected using admin and p@55w07d
 
-Test Results:
+## Reset Back to original state
+
+```python
 Set up the Authorization (Type: Basic Auth)
 Username: admin
 Password: p@55w07d
+```
+```python
 GET http://localhost:8080/countries/reset 
-Response code = 204 No Content
+# Response code = 204 No Content
 GET http://localhost:8080/countries
-Now, the Afganistan country is back again on the country list
+# Now, the Afganistan country is back again on the country list
+```
